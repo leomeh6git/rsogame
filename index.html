@@ -37,7 +37,7 @@ function toggleLoginForm() {
 
          // Change this to false to simulate a logged-out state
 
-        const ws = new WebSocket('ws://13.235.74.144:8090');
+        const ws = new WebSocket('ws://localhost:8090');
 
         ws.onmessage = function(event) {
             document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${event.data}`;
@@ -119,7 +119,7 @@ button:hover{
         <h1>Letter Cipher Game</h1>
         <p>Guess the original phrase by decoding the ciphered text!</p>
         <div id="cipher" class="cipher-section">
-            <h1 style="background-color: black; border-radius: 10px; color: white; padding: 20px; width: 30%; position: fixed; right: 42.5%;" id="cipherDisplay">Awaiting cipher...</h1>
+            <h1 style="background-color: black; border-radius: 10px; color: white; padding: 20px; width: 30%; position: fixed; right: 33.666%;" id="cipherDisplay">Awaiting cipher...</h1>
         </div>
         
         
