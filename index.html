@@ -37,7 +37,7 @@ function toggleLoginForm() {
 
         const isLoggedIn = false; // Change this to false to simulate a logged-out state
 
-        const ws = new WebSocket('ws://shiny-couscous-v7wpxvgpqwqcxjvx-7890.app.github.dev/');
+        const ws = new WebSocket('ws://localhost:8090');
 
         ws.onmessage = function(event) {
             document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${event.data}`;
