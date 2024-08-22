@@ -37,40 +37,22 @@ function toggleLoginForm() {
 
         const isLoggedIn = false; // Change this to false to simulate a logged-out state
 
-        function displayCipherPhrase() {
-            const cipherPhrase = localStorage.getItem('cipherPhrase') || 'No cipher phrase set.';
-            document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${cipherPhrase}`;
-        }
+        const ws = new WebSocket('ws://shiny-couscous-v7wpxvgpqwqcxjvx-7890.app.github.dev/');
+
+        ws.onmessage = function(event) {
+            document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${event.data}`;
+        };
 
         function setCipherPhrase() {
-            if (!isLoggedIn) {
-                document.getElementById('setCipherFeedback').textContent = 'You must be logged in to set the cipher phrase.';
-                document.getElementById('setCipherFeedback').style.color = 'red';
-                return;
-            }
-
-            const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
+            const newCipherPhrase = document.getElementById('cipherDisplay').value.trim();
             if (newCipherPhrase === '') {
                 document.getElementById('setCipherFeedback').textContent = 'Cipher phrase cannot be empty.';
                 document.getElementById('setCipherFeedback').style.color = 'red';
                 return;
             }
-
-            localStorage.setItem('cipherPhrase', newCipherPhrase);
+            ws.send(newCipherPhrase);
             document.getElementById('setCipherFeedback').textContent = 'Cipher phrase updated successfully!';
             document.getElementById('setCipherFeedback').style.color = 'green';
-            displayCipherPhrase();
-        }
-
-        // Initialize the page
-        function init() {
-            // Display the current cipher phrase
-            displayCipherPhrase();
-
-            // Show or hide the set cipher section based on login state
-            if (isLoggedIn) {
-                document.getElementById('setCipherSection').style.display = 'block';
-            }
         }
 
         // Call init function when the page loads
