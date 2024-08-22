@@ -44,15 +44,17 @@ function toggleLoginForm() {
         };
 
         function setCipherPhrase() {
-            const newCipherPhrase = document.getElementById('cipherDisplay').value.trim();
+            const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
             if (newCipherPhrase === '') {
                 document.getElementById('setCipherFeedback').textContent = 'Cipher phrase cannot be empty.';
                 document.getElementById('setCipherFeedback').style.color = 'red';
                 return;
+            } else  {
+                ws.send(newCipherPhrase);
+                document.getElementById('setCipherFeedback').textContent = 'Cipher phrase updated successfully!';
+                document.getElementById('setCipherFeedback').style.color = 'green';
             }
-            ws.send(newCipherPhrase);
-            document.getElementById('setCipherFeedback').textContent = 'Cipher phrase updated successfully!';
-            document.getElementById('setCipherFeedback').style.color = 'green';
+            
         }
 
         // Call init function when the page loads
