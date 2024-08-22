@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Cipher Game</title>
+    <link rel="shortcut icon" href="https://pouch.jumpshare.com/preview/fnvzvMQ9bsw2XPqmN74QqHWT6ypr79GJssey0fwX-wI2RwtmPdqJw3mslfA_0hPH7uuyMtN62NENRCO1wQdiOf-F8gFKPvoYIEbZleLsdxs" type="image/x-icon">
+  
+  
+  <script>
+
+function toggleLoginForm() {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm.style.display === 'block') {
+                loginForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'block';
+            }
+        }
+
+        function submitLogin() {
+            const username = document.getElementById('username').value;
+            const feedback = document.getElementById('loginFeedback');
+
+            // Simple example of login logic
+            if (username === 'crayoneatingrocks') {
+                feedback.textContent = 'Proceed with game modification';
+                feedback.style.color = 'green';
+                document.getElementById("setCipherSection").style = "";
+                isLoggedIn = true
+            } else {
+                feedback.textContent = 'Invalid username.';
+                feedback.style.color = 'red';
+            }
+        }
+
+
+        const isLoggedIn = false; // Change this to false to simulate a logged-out state
+
+        function displayCipherPhrase() {
+            const cipherPhrase = localStorage.getItem('cipherPhrase') || 'No cipher phrase set.';
+            document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${cipherPhrase}`;
+        }
+
+        function setCipherPhrase() {
+            if (!isLoggedIn) {
+                document.getElementById('setCipherFeedback').textContent = 'You must be logged in to set the cipher phrase.';
+                document.getElementById('setCipherFeedback').style.color = 'red';
+                return;
+            }
+
+            const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
+            if (newCipherPhrase === '') {
+                document.getElementById('setCipherFeedback').textContent = 'Cipher phrase cannot be empty.';
+                document.getElementById('setCipherFeedback').style.color = 'red';
+                return;
+            }
+
+            localStorage.setItem('cipherPhrase', newCipherPhrase);
+            document.getElementById('setCipherFeedback').textContent = 'Cipher phrase updated successfully!';
+            document.getElementById('setCipherFeedback').style.color = 'green';
+            displayCipherPhrase();
+        }
+
+        // Initialize the page
+        function init() {
+            // Display the current cipher phrase
+            displayCipherPhrase();
+
+            // Show or hide the set cipher section based on login state
+            if (isLoggedIn) {
+                document.getElementById('setCipherSection').style.display = 'block';
+            }
+        }
+
+        // Call init function when the page loads
+        window.onload = init;
+    </script>
+
+
+
+
+    <style>
+        body{
+    font-family:monospace;
+    margin: 0;
+    background-color: lightgray;
+}
+
+.navbar{
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(71, 71, 71);
+
+    color: white;
+}
+.container { 
+    margin: 20px auto; text-align: center; 
+}
+input { margin: 10px; padding: 10px; border-radius: 10px; border: 0;}
+button { padding: 10px 20px; border-radius: 10px; border: 0;
+    
+    transition: 0.25s;
+    transition-timing-function: ease-in-out;
+}
+button:hover{
+    scale: 110%;
+}
+.login-container { color: black; display: none; max-width: 300px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; }
+        .login-container input { margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; }
+        .login-container button { padding: 10px 20px; }
+        .login-link { cursor: pointer; color: #007BFF; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <p style="position: fixed; bottom: 0; right: 3; color: gray;">Programmed and Designed by Leopold Pitner</p>
+    
+    <div class="navbar">
+        <img src="https://pouch.jumpshare.com/preview/r49npBVxs6v1J1NjZPUPCO30QxajGse9_8QBS_j1wDn6fDl-N_SOuogS64T5Xiz17uuyMtN62NENRCO1wQdiOeWuoeeTle7gZsYKaxf8z9Y" alt="RSO_ICON" width="100px" height="100px" style="text-align: left;">
+        <h1>Welcome to the Radio Cipher Game!<h2 style="text-align: right; color:gray" class="login-link" onclick="toggleLoginForm()">Host Login</h2></h1>
+        <div id="loginForm" class="login-container">
+            <h2>Login</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <button onclick="submitLogin()">Submit</button>
+            <p id="loginFeedback"></p>
+        </div>
+        <!-- This section is for logged-in users to set the cipher phrase -->
+        <div id="setCipherSection" class="cipher-section" style="display: none;">
+            <input type="text" id="newCipherPhrase" placeholder="Enter new cipher phrase">
+            <button onclick="setCipherPhrase()">Set Cipher Phrase</button>
+            <p id="setCipherFeedback"></p>
+        </div>
+    </div><br style="padding: 50px;">
+    <div class="container">
+        <h1>Letter Cipher Game</h1>
+        <p>Guess the original phrase by decoding the ciphered text!</p>
+        <div id="cipher" class="cipher-section">
+            <h1 style="background-color: black; border-radius: 10px; color: white; padding: 20px; width: 10%; position: fixed; right: 42.5%;" id="cipherDisplay">Awaiting cipher...</h1>
+        </div>
+        
+        
+    </div>
+</body>
+</html>
