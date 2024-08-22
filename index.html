@@ -27,7 +27,7 @@ function toggleLoginForm() {
                 feedback.textContent = 'Proceed with game modification';
                 feedback.style.color = 'green';
                 document.getElementById("setCipherSection").style = "";
-                isLoggedIn = true
+                
             } else {
                 feedback.textContent = 'Invalid username.';
                 feedback.style.color = 'red';
@@ -35,7 +35,7 @@ function toggleLoginForm() {
         }
 
 
-        const isLoggedIn = false; // Change this to false to simulate a logged-out state
+         // Change this to false to simulate a logged-out state
 
         const ws = new WebSocket('ws://13.235.74.144:8090');
 

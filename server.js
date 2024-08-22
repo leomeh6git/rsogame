@@ -6,9 +6,7 @@ let cipherPhrase = 'No cipher phrase set.';
 server.on('connection', ws => {
     // Send the current cipher phrase to the new client
     ws.send(cipherPhrase);
-    ws.onopen = function() {
-        console.log('WebSocket connection established');
-    };
+    
     // Broadcast any new cipher phrase to all clients
     ws.on('message', message => {
         cipherPhrase = message;
