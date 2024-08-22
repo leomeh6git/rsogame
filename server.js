@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const server = new WebSocket.Server({ port: 7890 });
+const server = new WebSocket.Server({ port: 8090 });
 
 let cipherPhrase = 'No cipher phrase set.';
 
