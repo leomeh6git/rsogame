@@ -2,13 +2,13 @@ const WebSocket = require('ws');
 const server = new WebSocket.Server({ port: 8090 });
 
 let cipherPhrase = 'No cipher phrase set.';
-ws.onopen = function() {
-    console.log('WebSocket connection established');
-};
+
 server.on('connection', ws => {
     // Send the current cipher phrase to the new client
     ws.send(cipherPhrase);
-
+    ws.onopen = function() {
+        console.log('WebSocket connection established');
+    };
     // Broadcast any new cipher phrase to all clients
     ws.on('message', message => {
         cipherPhrase = message;

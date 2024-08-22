@@ -42,7 +42,7 @@ function toggleLoginForm() {
         ws.onmessage = function(event) {
             document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${event.data}`;
         };
-
+        
         function setCipherPhrase() {
             const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
             if (newCipherPhrase === '') {
