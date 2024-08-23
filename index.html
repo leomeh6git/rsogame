@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radio Cipher Game</title>
-    <link rel="shortcut icon" href="https://pouch.jumpshare.com/preview/fnvzvMQ9bsw2XPqmN74QqHWT6ypr79GJssey0fwX-wI2RwtmPdqJw3mslfA_0hPH7uuyMtN62NENRCO1wQdiOf-F8gFKPvoYIEbZleLsdxs" type="image/x-icon">
-  
-  
-  <script>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script>
 
 function toggleLoginForm() {
             const loginForm = document.getElementById('loginForm');
@@ -23,7 +21,7 @@ function toggleLoginForm() {
             const feedback = document.getElementById('loginFeedback');
 
             // Simple example of login logic
-            if (username === 'crayoneatingrocks') {
+            if (username === 'blinken123') {
                 feedback.textContent = 'Proceed with game modification';
                 feedback.style.color = 'green';
                 document.getElementById("setCipherSection").style = "";
@@ -37,28 +35,72 @@ function toggleLoginForm() {
 
          // Change this to false to simulate a logged-out state
 
-        const ws = new WebSocket('ws://localhost:8090');
+         const socket = new WebSocket('ws://176.205.18.181:8090');
 
-        ws.onmessage = function(event) {
-            document.getElementById('cipherDisplay').textContent = `Cipher Phrase: ${event.data}`;
-        };
-        
-        function setCipherPhrase() {
-            const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
-            if (newCipherPhrase === '') {
-                document.getElementById('setCipherFeedback').textContent = 'Cipher phrase cannot be empty.';
-                document.getElementById('setCipherFeedback').style.color = 'red';
-                return;
-            } else  {
-                ws.send(newCipherPhrase);
-                document.getElementById('setCipherFeedback').textContent = 'Cipher phrase updated successfully!';
-                document.getElementById('setCipherFeedback').style.color = 'green';
+socket.onopen = () => {
+    console.log('WebSocket connection established');
+};
+
+socket.onmessage = (event) => {
+    let data;
+    
+    // Check if the data is a Blob
+    if (event.data instanceof Blob) {
+        // Convert Blob to text
+        const reader = new FileReader();
+        reader.onload = () => {
+            try {
+                data = JSON.parse(reader.result);
+                handleData(data);
+            } catch (error) {
+                console.error('Error parsing message:', error);
             }
-            
+        };
+        reader.readAsText(event.data);
+    } else {
+        // Handle text data directly
+        try {
+            data = JSON.parse(event.data);
+            handleData(data);
+        } catch (error) {
+            console.error('Error parsing message:', error);
         }
+    }
+};
 
-        // Call init function when the page loads
-        window.onload = init;
+function handleData(data) {
+    if (data.type === 'update' && data.cipherPhrase) {
+        document.getElementById('cipherDisplay').textContent = data.cipherPhrase;
+    }
+}
+
+socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+};
+
+socket.onclose = () => {
+    console.log('WebSocket connection closed');
+};
+
+// Send new cipher phrase to the WebSocket server
+function setCipherPhrase() {
+    const newCipherPhrase = document.getElementById('newCipherPhrase').value.trim();
+    const feedback = document.getElementById('setCipherFeedback');
+
+    if (newCipherPhrase === '') {
+        feedback.textContent = 'Cipher phrase cannot be empty.';
+        feedback.style.color = 'red';
+    } else {
+        // Send JSON message to WebSocket server
+        socket.send(JSON.stringify({
+            type: 'update',
+            cipherPhrase: newCipherPhrase
+        }));
+        feedback.textContent = 'Cipher phrase updated successfully!';
+        feedback.style.color = 'green';
+        document.getElementById('newCipherPhrase').value = ''; // Clear input
+    }
+}
     </script>
 
 
@@ -90,7 +132,7 @@ button { padding: 10px 20px; border-radius: 10px; border: 0;
 button:hover{
     scale: 110%;
 }
-.login-container { color: black; display: none; max-width: 300px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; }
+.login-container { color: black; display: none; max-width: 300px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; transition: 0.5s, 0.5s; scale: 100%;}
         .login-container input { margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; }
         .login-container button { padding: 10px 20px; }
         .login-link { cursor: pointer; color: #007BFF; text-decoration: underline; }
@@ -100,7 +142,7 @@ button:hover{
     <p style="position: fixed; bottom: 0; right: 3; color: gray;">Programmed and Designed by Leopold Pitner</p>
     
     <div class="navbar">
-        <img src="https://pouch.jumpshare.com/preview/r49npBVxs6v1J1NjZPUPCO30QxajGse9_8QBS_j1wDn6fDl-N_SOuogS64T5Xiz17uuyMtN62NENRCO1wQdiOeWuoeeTle7gZsYKaxf8z9Y" alt="RSO_ICON" width="100px" height="100px" style="text-align: left;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Seal_of_the_United_States_Diplomatic_Security_Service.svg" alt="RSO_ICON" width="100px" height="100px" style="text-align: left;">
         <h1>Welcome to the Radio Cipher Game!<h2 style="text-align: right; color:gray" class="login-link" onclick="toggleLoginForm()">Host Login</h2></h1>
         <div id="loginForm" class="login-container">
             <h2>Login</h2>
@@ -119,10 +161,11 @@ button:hover{
         <h1>Letter Cipher Game</h1>
         <p>Guess the original phrase by decoding the ciphered text!</p>
         <div id="cipher" class="cipher-section">
-            <h1 style="background-color: black; border-radius: 10px; color: white; padding: 20px; width: 30%; position: fixed; right: 33.666%;" id="cipherDisplay">Awaiting cipher...</h1>
+            <h1 style="background-color: black; border-radius: 10px; color: white; padding: 20px; width: 30%; position: absolute; left: 50%; transform: translateX(-50%);" id="cipherDisplay">Awaiting cipher...</h1>
         </div>
-        
-        
+        <br><br><br><br><br><br><br><br>
+        <h1>If you win, let the Marine on the radio know the answer!</h1>
+        <br><h2>Winners can recieve a gift card for magic carpet...</h2>
     </div>
 </body>
 </html>
