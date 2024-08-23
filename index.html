@@ -35,7 +35,7 @@ function toggleLoginForm() {
 
          // Change this to false to simulate a logged-out state
 
-         const socket = new WebSocket('ws://176.205.18.181:8090');
+         const socket = new WebSocket('wss://localhost:8080');
 
 socket.onopen = () => {
     console.log('WebSocket connection established');
